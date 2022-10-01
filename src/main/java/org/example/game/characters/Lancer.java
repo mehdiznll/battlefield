@@ -1,6 +1,6 @@
 package org.example.game.characters;
 
-public class Lancer extends Warrior {
+public class Lancer extends Warrior implements DamageDone {
 
     public Lancer() {
         super(50, 6);
@@ -8,18 +8,16 @@ public class Lancer extends Warrior {
 
     @Override
     public void hit(CanReceiveDamage opponent) {
-        int healthBefore = opponent.getHealth();
 
-        opponent.receiveDamage(this);
+        int finalDamage = damageDealt(opponent);
+        if (opponent instanceof ArmyWarrior armyUnit) {
 
-        if (opponent.hasWarriorBehind()) {
-            double decreaseAttack = 0.5;
-            int healthAfter = opponent.getHealth();
-            int differenceHealth = healthBefore - healthAfter;
-
-            Warrior nextOpponent = opponent.getNextWarrior();
-            nextOpponent.receiveDamage(() -> (int) (differenceHealth * decreaseAttack));
-
+            final Warrior warriorBehind = armyUnit.getWarriorBehind();
+            if (warriorBehind != null) {
+                int reducedDamage = finalDamage / 2;
+                warriorBehind.receiveDamage(() -> reducedDamage);
+            }
         }
+
     }
 }

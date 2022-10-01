@@ -1,6 +1,7 @@
 package org.example.game;
 
 
+import org.example.game.characters.Army;
 import org.example.game.characters.Warrior;
 
 public class Battle {

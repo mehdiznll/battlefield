@@ -1,9 +1,6 @@
 package org.example.game;
 
-import org.example.game.characters.Defender;
-import org.example.game.characters.Knight;
-import org.example.game.characters.Vampire;
-import org.example.game.characters.Warrior;
+import org.example.game.characters.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

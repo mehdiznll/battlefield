@@ -1,57 +1,65 @@
 package org.example.game.characters;
 
 
-@FunctionalInterface  // SAM (Single abstract method)
-interface HasAttack {
-    int getAttack();
-}
-
-
 interface HasHealth {
     int getHealth();
+
+    void setHealth(int health);
 
     default boolean isAlive() {
         return getHealth() > 0;
     }
 }
 
-interface HasWarriorBehind {
-    Warrior getNextWarrior();
+@FunctionalInterface
+// SAM (Single abstract method)
+interface HasAttack {
 
-    void setNextWarrior(Warrior nextWarrior);
+    int getAttack();
 
-    boolean hasWarriorBehind();
+    default void hit(CanReceiveDamage opponent) {
 
-}
-
-interface CanReceiveDamage extends HasHealth, HasWarriorBehind {
-    public void receiveDamage(HasAttack damager);
-}
-
-
-public class Warrior implements HasAttack, HasHealth, CanReceiveDamage {
-
-    private int attack;
-    protected int health;
-    protected int initialHealth;
-    protected Warrior nextWarrior;
-
-    public Warrior() {
-        this.attack = 5;
-        this.health = 50;
-        this.initialHealth = health;
+        opponent.receiveDamage(this);
     }
 
-    protected Warrior(int health, int attack) {
+}
 
+interface CanReceiveDamage extends HasHealth {
+    void receiveDamage(HasAttack damager);
+}
+
+interface CanBeWeakened extends HasAttack {
+    void setAttack(int attack);
+
+    default void setWeakness() {
+
+    }
+}
+
+
+public class Warrior implements HasAttack, HasHealth, CanReceiveDamage, CanBeWeakened {
+
+    private int health;
+    private int attack;
+    private int initialHealth;
+
+    public Warrior(int health, int attack) {
         initialHealth = this.health = health;
         this.attack = attack;
     }
 
+    /**
+     * Overloaded constructor for Warrior
+     */
+    public Warrior() {
+        this(50, 5);
+    }
 
     @Override
-    public int getAttack() {
-        return attack;
+    public void receiveDamage(HasAttack damager) {
+
+        setHealth(getHealth() - damager.getAttack());
+
     }
 
     @Override
@@ -59,34 +67,27 @@ public class Warrior implements HasAttack, HasHealth, CanReceiveDamage {
         return health;
     }
 
-    public Warrior getNextWarrior() {
-        return nextWarrior;
+    @Override
+    public int getAttack() {
+        return attack;
+    }
+
+
+    @Override
+    public void setHealth(int health) {
+        this.health = Math.min(health, initialHealth);
     }
 
     @Override
-    public void setNextWarrior(Warrior nextWarrior) {
-
+    public void setAttack(int attack) {
+        this.attack = attack;
     }
 
-    @Override
-    public boolean hasWarriorBehind() {
-        return false;
-    }
+//    public void hit(CanReceiveDamage opponent) {
+//
+//        opponent.receiveDamage(this);
+//
+//    }
 
-    public int setHealth(int health) {
-        this.health = health;
-        return health;
-    }
-
-    public void hit(CanReceiveDamage opponent) {
-
-        opponent.receiveDamage(this);
-
-    }
-
-    @Override
-    public void receiveDamage(HasAttack damager) {
-        setHealth(getHealth() - damager.getAttack());
-    }
 
 }

@@ -1,5 +1,6 @@
 package org.example.game;
 
+import org.example.game.characters.Army;
 import org.example.game.characters.Knight;
 import org.example.game.characters.Warrior;
 import org.junit.jupiter.api.DisplayName;
