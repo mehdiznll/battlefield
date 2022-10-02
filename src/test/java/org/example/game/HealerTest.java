@@ -111,11 +111,11 @@ public class HealerTest {
         var army2 = new Army();
 
         army1.addUnits(Lancer::new, 1);
-        army1.addUnits(Vampire::new, 3);
+        army1.addUnits(Warrior::new, 3);
         army1.addUnits(Healer::new, 1);
         army1.addUnits(Warrior::new, 4);
         army1.addUnits(Healer::new, 1);
-        army1.addUnits(Defender::new, 2);
+        army1.addUnits(Knight::new, 2);
         army2.addUnits(Warrior::new, 4);
         army2.addUnits(Defender::new, 4);
         army2.addUnits(Healer::new, 1);

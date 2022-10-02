@@ -6,6 +6,10 @@ import org.example.game.characters.Warrior;
 
 public class Battle {
 
+    private Battle() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * @param attacker
      * @param defender
@@ -24,10 +28,9 @@ public class Battle {
 
 
     /**
-     *
      * @param army1
      * @param army2
-     * @return  next warrior in the army.
+     * @return next warrior in the army.
      */
     public static boolean armyFight(Army army1, Army army2) {
 
@@ -42,4 +45,22 @@ public class Battle {
     }
 
 
+    public static boolean straightFight(Army army1, Army army2) {
+
+        while (true) {
+            var army1Iterator = army1.iterator();
+            var army2Iterator = army2.iterator();
+
+            if (!army1Iterator.hasNext()) return false;
+            if (!army2Iterator.hasNext()) return true;
+
+            while (army1Iterator.hasNext() && army2Iterator.hasNext()) {
+                fight(army1Iterator.next(), army2Iterator.next());
+
+            }
+
+            army1.removeDeadUnits();
+            army2.removeDeadUnits();
+        }
+    }
 }

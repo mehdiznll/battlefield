@@ -1,6 +1,5 @@
 package org.example.game.characters;
 
-import org.example.game.characters.Warrior;
 
 public interface ArmyWarrior {
 
