@@ -1,6 +1,8 @@
 package org.example.game.characters;
 
 
+import org.example.game.characters.weapons.Weapon;
+
 interface HasHealth {
     int getHealth();
 
@@ -28,16 +30,12 @@ interface CanReceiveDamage extends HasHealth {
     void receiveDamage(HasAttack damager);
 }
 
-interface CanBeWeakened extends HasAttack {
-    void setAttack(int attack);
-
-    default void setWeakness() {
-
-    }
+interface CanEquipWeapon {
+    void equipWeapon(Weapon weaponType);
 }
 
 
-public class Warrior implements HasAttack, HasHealth, CanReceiveDamage, CanBeWeakened {
+public class Warrior implements HasAttack, HasHealth, CanReceiveDamage, CanEquipWeapon {
 
     private int health;
     private int attack;
@@ -78,10 +76,10 @@ public class Warrior implements HasAttack, HasHealth, CanReceiveDamage, CanBeWea
         this.health = Math.min(health, initialHealth);
     }
 
-    @Override
     public void setAttack(int attack) {
         this.attack = attack;
     }
+
 
 //    public void hit(CanReceiveDamage opponent) {
 //
@@ -90,4 +88,10 @@ public class Warrior implements HasAttack, HasHealth, CanReceiveDamage, CanBeWea
 //    }
 
 
+    @Override
+    public void equipWeapon(Weapon weaponType) {
+        initialHealth = initialHealth + weaponType.getHealth();
+        setHealth(initialHealth);
+        setAttack(getAttack() + weaponType.getAttack());
+    }
 }

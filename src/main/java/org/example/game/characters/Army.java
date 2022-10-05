@@ -1,6 +1,8 @@
 package org.example.game.characters;
 
 
+import org.example.game.characters.weapons.Weapon;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Supplier;
@@ -177,7 +179,6 @@ public class Army implements Iterable<Warrior> {
     }
 
 
-
     public Army addUnits(Supplier<Warrior> warriorFactory, int amount) { //Can be done with Cloneable interface too
         for (int i = 0; i < amount; i++) {
             final Warrior warrior = warriorFactory.get();
@@ -195,76 +196,21 @@ public class Army implements Iterable<Warrior> {
         }
     }
 
-//    public void equipWarriorAtPosition(int position, Weapon weaponType){
-//        Iterator<Warrior> iterator = iterator();
-//        Warrior next = iterator.next();
-//        for (int i = 0; i < position-1; i++) {
-//            next = iterator.next();
-//        }
-//
-//        next.equipWeapon(weaponType);
-//
-//    }
+
+    public void equipWarriorAtPosition(int position, Weapon weaponType) {
+
+        Iterator<Warrior> iterator = iterator();
+
+        Warrior next = iterator.next();
+        for (int i = 0; i < position - 1; i++) {
+            next = iterator.next();
+        }
+
+        next.equipWeapon(weaponType);
+
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //

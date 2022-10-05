@@ -1,17 +1,25 @@
 package org.example.game.characters;
 
+import lombok.Setter;
+import org.example.game.characters.weapons.Weapon;
+
+@Setter
 public class Defender extends Warrior {
 
-    private static final int DEFENCE = 2;
+    private int defence = 2;
 
     public Defender() {
 
         super(60, 3);
     }
 
-    protected int getDefence() {
-        return DEFENCE;
+    public int getDefence() {
+        return defence;
     }
+
+//    public void setDefence(int defence) {
+//        this.defence = defence;
+//    }
 
     @Override
     public void receiveDamage(HasAttack damager) {
@@ -21,15 +29,9 @@ public class Defender extends Warrior {
     }
 
 
-//    } int receiveDamage(int damage) {
-//        int finalDamage = damage - DEFENCE;
-//
-//        if (damage < DEFENCE) {
-//            super.receiveDamage(0);
-//        } else {
-//            super.receiveDamage(finalDamage);
-//        }
-//        return finalDamage;
-//    }
-
+    @Override
+    public void equipWeapon(Weapon weaponType) {
+        super.equipWeapon(weaponType);
+        setDefence(getDefence() + weaponType.getDefense());
+    }
 }

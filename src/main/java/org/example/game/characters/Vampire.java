@@ -1,7 +1,11 @@
 package org.example.game.characters;
 
+import lombok.Data;
+import org.example.game.characters.weapons.Weapon;
+
+@Data
 public class Vampire extends Warrior {
-    private static final int VAMPIRISM = 50;
+    private int vampirism = 50;
 
     public Vampire() {
         super(40, 4);
@@ -15,7 +19,13 @@ public class Vampire extends Warrior {
         int healthAfter = opponent.getHealth();
         int damageDealt = healthBefore - healthAfter;
         final int percents = 100;
-        int healMyselfBy = damageDealt * VAMPIRISM/ percents;
+        int healMyselfBy = damageDealt * vampirism / percents;
         setHealth(getHealth() + healMyselfBy);
+    }
+
+    @Override
+    public void equipWeapon(Weapon weaponType) {
+        super.equipWeapon(weaponType);
+        setVampirism(getVampirism() + weaponType.getVampirism());
     }
 }
