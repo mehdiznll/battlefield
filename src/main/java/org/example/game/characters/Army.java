@@ -4,11 +4,14 @@ package org.example.game.characters;
 import org.example.game.characters.weapons.Weapon;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 
 
 public class Army implements Iterable<Warrior> {
+
+    Warlord warlord;
 
 
     private class Node extends Warrior implements ArmyWarrior, ArmyHealer {
@@ -87,6 +90,8 @@ public class Army implements Iterable<Warrior> {
 
     private final Node head = new Node(null);
     private Node tail = head;
+    private int size;
+
 
     boolean isEmpty() {
         return tail == head;
@@ -97,7 +102,13 @@ public class Army implements Iterable<Warrior> {
         node.next = head;
         tail.next = node;
         tail = node;
+        size++;
 
+    }
+
+    private void clear() {
+        tail = head.next = head;
+        size = 0;
     }
 
 
@@ -124,6 +135,7 @@ public class Army implements Iterable<Warrior> {
                 tail = head;
             }
             head.next = head.next.next;
+            size--;
         }
 
         @Override
@@ -181,11 +193,38 @@ public class Army implements Iterable<Warrior> {
 
     public Army addUnits(Supplier<Warrior> warriorFactory, int amount) { //Can be done with Cloneable interface too
         for (int i = 0; i < amount; i++) {
-            final Warrior warrior = warriorFactory.get();
+            Warrior warrior = warriorFactory.get();
+            if (warrior instanceof Warlord) {
+                if (warlord == null) {
+                    warlord = (Warlord) warrior;
+                } else {
+                    break;
+                }
+            }
+
             addToTail(warrior);
         }
         return this;
     }
+
+    public void moveUnites() {
+
+        if (warlord != null && !warlord.isAlive()){
+            warlord = null;
+        }
+
+
+        if (warlord != null) {
+            List<Warrior> newArrangement = warlord.moveUnits(iterator());
+
+            clear();
+            for (var warrior : newArrangement) {
+                addUnits(() -> warrior, 1);
+
+            }
+        }
+    }
+
 
     public void removeDeadUnits() {
         Iterator<Warrior> iterator = iterator();
